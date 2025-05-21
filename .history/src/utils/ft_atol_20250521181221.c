@@ -1,0 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/21 17:22:11 by abonifac          #+#    #+#             */
+/*   Updated: 2025/05/21 18:12:21 by abonifac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+long ft_atol(const char *str)
+{
+	int	i;
+	long nb;
+
+	ft_printf("%s\n", str);
+	nb = 0;
+	i = 0;
+	while ((str[i] <= 13 && str[i] >= 9) || str[i] == ' ')
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			ft_exit("No negative values allowed");
+		i++;
+	}
+	if (ft_strlen(str) > 10)
+		ft_exit("You can't provide too large numbers");
+	while (str[i])
+	{
+		printf("nb is %ld\n", nb);
+		nb = (nb * 10) + (str[i] + '0');
+		i++;
+	}
+	return (nb);
+}

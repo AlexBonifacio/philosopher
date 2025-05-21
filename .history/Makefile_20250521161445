@@ -1,0 +1,7 @@
+
+
+NAME :=
+
+CC := cc
+CFLAGS := -Wall -Wextra -Werror -MMD -MP
+INC

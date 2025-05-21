@@ -1,0 +1,22 @@
+
+
+NAME := philo
+
+CC := cc
+CFLAGS := -Wall -Wextra -Werror -MMD -MP
+INC := -Iinclude
+
+SRC := main.c
+
+SRC_DIR := src
+OBJ_DIR := obj
+
+OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
+DEP := $(OBJ:.o=.d)
+
+VPATH := $(SRC_DIR)
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	$

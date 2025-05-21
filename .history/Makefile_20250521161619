@@ -1,0 +1,10 @@
+
+
+NAME := philo
+
+CC := cc
+CFLAGS := -Wall -Wextra -Werror -MMD -MP
+INC := -Iinclude
+
+SRC_DIR := src
+OBJ_DIR := obj
