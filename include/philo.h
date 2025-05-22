@@ -40,21 +40,21 @@ typedef struct s_philo
 	int eat_count;
 	t_fork *l_fork;
 	t_fork *r_fork;
-	unsigned int last_eat_time;
+	long		 last_eat_time;
 	pthread_t thread_id;
 } t_philo;
 
 typedef struct s_params
 {
-	unsigned int nb_philos;
-	unsigned int time_to_d;
-	unsigned int time_to_e;
-	unsigned int time_to_s;
-	int limit_meals;
-	t_timeval *start_time;
-	bool end;
-	t_philo *philos;
-	t_fork *forks;
+	unsigned int	nb_philos;
+	long			time_to_d;
+	long			time_to_e;
+	long			time_to_s;
+	int 			limit_meals;
+	t_timeval		*start_time;
+	bool			end;
+	t_philo			*philos;
+	t_fork			*forks;
 } t_params;
 
 

@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/21 18:56:11 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:28:18 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@ void init_params(t_params *params, char **av)
 {
 	(void)params;
 	(void)av;
-	int i = 1;
+	// int i = 0;
 
-	while (av[i])
-	{
-		ft_atol(av[i]);
-		i++;
-	}
+	params->nb_philos = ft_atol(av[1]);
+	params->time_to_d = ft_atol(av[2]) * 1000;
+	params->time_to_e = ft_atol(av[3]) * 1000;
+	params->time_to_s = ft_atol(av[4]) * 1000;
+	if (av[5])
+		params->limit_meals = ft_atol(av[5]);
 }
 
 int main(int ac, char **av)

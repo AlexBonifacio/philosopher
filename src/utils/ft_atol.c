@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:22:11 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/21 18:55:09 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:59:14 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ long ft_atol(const char *str)
 			ft_exit("No negative values allowed");
 		i++;
 	}
-	if (ft_strlen(str) > 10)
+	if (ft_strlen(str + i) > 10)
 		ft_exit("You can't provide too large numbers");
 	while (str[i])
 	{
 		nb = (nb * 10) + str[i] - '0';
 		i++;
 	}
+	if (nb == 0)
+		ft_exit("Something is wrong with arguments");
 	if (nb > 2147483647)
 		ft_exit("Number is too large");
 	return (nb);
