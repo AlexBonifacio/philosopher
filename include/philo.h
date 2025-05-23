@@ -36,12 +36,12 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	int id;
-	int eat_count;
-	t_fork *l_fork;
-	t_fork *r_fork;
-	long		 last_eat_time;
-	pthread_t thread_id;
+	int 			id;
+	int 			eat_count;
+	t_fork 			*l_fork;
+	t_fork 			*r_fork;
+	long		 	last_eat_time;
+	pthread_t 		thread_id;
 } t_philo;
 
 typedef struct s_params
@@ -65,6 +65,9 @@ void 	ft_exit(char *str);
 size_t 	ft_strlen(const char *str);
 int 	ft_isspace(int c);
 void 	check_args(int ac, char **av);
+
+void 	mutex_safe_call(t_mutex *mutex);
+void 	thread_safe_call(pthread_t *thread, void *(*func)(void *), void *arg);
 
 
 #endif

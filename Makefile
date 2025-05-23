@@ -4,7 +4,7 @@ CC := cc
 CFLAGS := -Wall -Wextra -Werror -MMD -MP
 INC := -Iinclude
 
-SRC := main.c ft_atol.c ft_exit.c ft_strlen.c check_args.c ft_isspace.c
+SRC := main.c ft_atol.c ft_exit.c ft_strlen.c check_args.c ft_isspace.c threads_mutex_error.c
 
 SRC_DIR := src
 OBJ_DIR := obj

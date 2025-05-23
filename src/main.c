@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/22 15:28:18 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:46:30 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void init_params(t_params *params, char **av)
 	params->time_to_s = ft_atol(av[4]) * 1000;
 	if (av[5])
 		params->limit_meals = ft_atol(av[5]);
+	else
+		params->limit_meals = 0;
 }
 
 int main(int ac, char **av)
@@ -36,8 +38,11 @@ int main(int ac, char **av)
 	t_params params;
 	check_args(ac, av);
 	init_params(&params, av);
-	printf("%d\n", FORK);
+	printf("nb_philos: %u\n", params.nb_philos);
+	printf("time_to_d: %ld\n", params.time_to_d);
+	printf("time_to_e: %ld\n", params.time_to_e);
+	printf("time_to_s: %ld\n", params.time_to_s);
+	
 	(void)av;
 	return (0);
 }
-
