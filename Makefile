@@ -20,9 +20,11 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(INC) -o $@ $^
 
 # Compile object files
-$(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 clean:
 	rm -rf $(OBJ_DIR)
