@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:58:57 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/25 15:07:11 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:38:39 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,24 @@ int	mutex_init_safe(t_mutex *mutex)
 int	mutex_destroy_safe(t_mutex *mutex)
 {
 	if (pthread_mutex_destroy(mutex) != 0)
-	{
 		return ft_exit("failed to destroy mutex");
+	return NO_ERR;
+}
+
+int thread_create_safe(pthread_t *thread, void *(*func)(void*), void *arg)
+{
+	if (pthread_create(thread, NULL, func, arg) != 0)
+	{
+		return ft_exit("failed to create thread");
 	}
 	return NO_ERR;
 }
 
-int thread_safe_call(pthread_t *thread, void *(*func)(void *), void *arg)
+int thread_safe_call(pthread_t *thread)
 {
 	if (pthread_join(*thread, NULL) != 0)
 	{
 		return ft_exit("failed to join thread");
-	}
-	if (pthread_create(thread, NULL, func, arg) != 0)
-	{
-		return ft_exit("failed to create thread");
 	}
 	if (pthread_detach(*thread) != 0)
 	{
