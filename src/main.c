@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/26 19:18:17 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/26 23:00:44 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int init_mutex(t_params *params)
 	}
 	if (status == ERROR)
 	{
-		while (i-- > 0)
+		while (--i >= 0)
 			mutex_destroy_safe(&params->forks[i].m_fork);
 	}
 	return status;
@@ -101,12 +101,11 @@ int dinner_init(t_params *params)
 		}
 		if (status == ERROR)
 		{
-			while (i > 0)
-			{
+			while (--i >= 0)
 				pthread_detach(params->philos[i].thread_id);
-				i--;
-				return status;
-			}
+			while (++i < params->nb_philos)
+				mutex_destroy_safe(&params->forks[i].m_fork);
+			return status;
 		}
 	}
 	return NO_ERR;
@@ -159,7 +158,6 @@ int main(int ac, char **av)
 		return 3;
 	init_philos(&params);
 	ft_gettimeofday();
-	// init_mutex(&params);
 
 	return (0);
 }
