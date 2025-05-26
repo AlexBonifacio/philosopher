@@ -1,7 +1,7 @@
 NAME := philo
 
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -MMD -MP
+CFLAGS := -Wall -Wextra -Werror -MMD -MP -g3
 INC := -Iinclude
 
 SRC := main.c ft_atol.c ft_exit.c ft_strlen.c check_args.c ft_isspace.c threads_mutex_error.c

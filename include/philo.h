@@ -15,6 +15,11 @@
 # include <sys/types.h>
 # include <stdbool.h>
 
+# define MAX_PHILOS 200
+
+#define NO_ERR 1
+#define ERROR 0
+
 #define FORK 1
 #define EAT 2
 #define SLEEP 3
@@ -30,7 +35,7 @@ typedef struct timeval t_timeval;
 
 typedef struct s_fork
 {
-	t_mutex fork;
+	t_mutex m_fork;
 	int 	id;
 } t_fork;
 
@@ -46,7 +51,7 @@ typedef struct s_philo
 
 typedef struct s_params
 {
-	unsigned int	nb_philos;
+	int				nb_philos;
 	long			time_to_d;
 	long			time_to_e;
 	long			time_to_s;
@@ -61,13 +66,15 @@ typedef struct s_params
 /************************************************/
 
 long 	ft_atol(const char *str);
-void 	ft_exit(char *str);
+int 	ft_exit(char *str);
 size_t 	ft_strlen(const char *str);
 int 	ft_isspace(int c);
-void 	check_args(int ac, char **av);
+int 	check_args(int ac, char **av);
 
-void 	mutex_safe_call(t_mutex *mutex);
-void 	thread_safe_call(pthread_t *thread, void *(*func)(void *), void *arg);
+// int 	mutex_safe_call(t_mutex *mutex);
+int		mutex_init_safe(t_mutex *mutex);
+int		mutex_destroy_safe(t_mutex *mutex);
+int 	thread_safe_call(pthread_t *thread, void *(*func)(void *), void *arg);
 
 
 #endif

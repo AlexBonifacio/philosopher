@@ -6,13 +6,13 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:24:45 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/21 18:58:07 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:03:50 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	check_nb_of_args(int ac)
+static int	check_nb_of_args(int ac)
 {
 	
 	if (ac != 5 && ac != 6)
@@ -23,11 +23,12 @@ static void	check_nb_of_args(int ac)
 			"time_to_eat time_to_sleep "
 			"[number_of_times_each_philosopher_must_eat]\n"
 			RESET);
-			exit(EXIT_FAILURE);
-	}	
+			return ERROR;
+	}
+	return NO_ERR;
 }
 
-static void	check_digit(char **av)
+static int	check_digit(char **av)
 {
 	int i;
 	int j;
@@ -36,21 +37,26 @@ static void	check_digit(char **av)
 	while (av[i])
 	{
 		if (!av[i] || ft_strlen(av[i]) == 0)
-			ft_exit("Arguments cannot be NULL or empty");
+			return ft_exit("Arguments cannot be NULL or empty");
 		j = 0;
 		while (av[i][j])
 		{
 			if ((av[i][j] < '0' || av[i][j] > '9')
 				&& (av[i][j] != '-' && av[i][j] != '+' && !ft_isspace(av[i][j])))
-				ft_exit("Arguments must be digits");
+				return ft_exit("Arguments must be digits");
 			j++;
 		}
 		i++;
 	}
+	return NO_ERR;
 }
 
-void check_args(int ac, char **av)
+int check_args(int ac, char **av)
 {
-	check_nb_of_args(ac);
-	check_digit(av);
+	
+	if (check_nb_of_args(ac) == 0)
+		return ERROR;
+	if (check_digit(av) == 0)
+		return ERROR;
+	return NO_ERR;
 }
