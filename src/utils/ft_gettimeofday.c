@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:59:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/26 16:56:38 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:53:54 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ long ft_gettimeofday(void)
 	// sleep(1);
 	// gettimeofday(&time, NULL);
 	// long elap_time = time.tv_sec * 1000 + time.tv_usec / 1000 - start_time;
-	printf("timeoday %08ld\n", start_time);
+	// printf("timeoday %08ld\n", start_time);
 	return(start_time);
 }

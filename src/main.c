@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/27 11:59:08 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:02:20 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,19 @@ int init_mutex(t_params *params)
 	return status;
 }
 
-void *dinner_routine(void *data)
+void *dinner_routine(void *params)
 {
 	t_philo *philo;
 
-	philo = (t_philo *)data;
+	philo = (t_philo *)params;
 	wait_for_start(philo->params);
+	
+	while (get_bool_mutex(&philo->params->table_mutex, &philo->params->end) == false)
+	{
+		set_bool_mutex(&philo->params->table_mutex, &philo->params->end, true);
+	}
 	return philo;
 }
-
-
 
 int dinner_init(t_params *params)
 {
@@ -108,13 +111,20 @@ int dinner_init(t_params *params)
 		if (status == ERROR)
 		{
 			while (--i >= 0)
-				pthread_detach(params->philos[i].thread_id);
+				thread_detach_safe(&params->philos[i].thread_id);
 			while (++i < params->nb_philos)
 				mutex_destroy_safe(&params->forks[i].m_fork);
 			return status;
 		}
 	}
+	params->start_time = ft_gettimeofday();
 	set_bool_mutex(&params->table_mutex,&params->rdy_to_start, true);
+	i = 0;
+	while (i < params->nb_philos)
+	{
+		thread_join_safe(&params->philos[i].thread_id);
+		i++;
+	}
 	return NO_ERR;
 }
 
@@ -165,7 +175,8 @@ int main(int ac, char **av)
 	if (init_mutex(&params) == ERROR)
 		return 3;
 	init_philos(&params);
-	ft_gettimeofday();
+	dinner_init(&params);
+	printf("time start %ld\n", params.start_time);
 
 	return (0);
 }

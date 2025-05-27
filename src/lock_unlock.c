@@ -6,17 +6,17 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:56:33 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/27 11:27:20 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:33:36 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	set_long_mutex(t_mutex *mutex, long *dest, long value)
+void	set_long_mutex(t_mutex *mutex, long *result, long value)
 {
 
 	mutex_lock_safe(mutex);
-	*dest = value;
+	*result = value;
 	mutex_unlock_safe(mutex);
 }
 
@@ -30,19 +30,19 @@ long 	get_long_mutex(t_mutex *mutex, long *value)
 	return result;
 }
 
-void set_bool_mutex(t_mutex *mutex, bool *dest, bool value)
+void set_bool_mutex(t_mutex *mutex, bool *flag, bool value)
 {
 	mutex_lock_safe(mutex);
-	*dest = value;
+	*flag = value;
 	mutex_unlock_safe(mutex);
 }
 
 bool get_bool_mutex(t_mutex *mutex, bool *value)
 {
-	bool result;
+	bool flag;
 	
 	mutex_lock_safe(mutex);
-	result = *value;
+	flag = *value;
 	mutex_unlock_safe(mutex);
-	return result;
+	return flag;
 }

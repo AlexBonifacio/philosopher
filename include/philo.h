@@ -44,14 +44,14 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	int id;
-	int eat_count;
-	bool is_full;
-	long last_eat_time;
-	t_fork *f_fork;
-	t_fork *s_fork;
-	pthread_t thread_id;
-	t_params *params;
+	int			id;
+	int			eat_count;
+	bool		is_full;
+	long		last_eat_time;
+	t_fork		*f_fork;
+	t_fork		*s_fork;
+	pthread_t	thread_id;
+	t_params	*params;
 } t_philo;
 
 struct s_params
@@ -61,10 +61,10 @@ struct s_params
 	long 		time_to_e;
 	long 		time_to_s;
 	int 		limit_meals;
+	long	 	start_time;
 	bool 		end;
 	bool 		rdy_to_start;
 	t_mutex 	table_mutex;
-	t_timeval 	*start_time;
 	t_philo 	*philos;
 	t_fork 		*forks;
 };
@@ -86,6 +86,8 @@ int mutex_lock_safe(t_mutex *mutex);
 int mutex_unlock_safe(t_mutex *mutex);
 
 int thread_create_safe(pthread_t *thread, void *(*func)(void*), void *arg);
+int	thread_join_safe(pthread_t *thread);
+int thread_detach_safe(pthread_t *thread);
 // int thread_safe_call(pthread_t *thread, void *(*func)(void *), void *arg);
 long get_long_mutex(t_mutex *mutex, long *value);
 void set_long_mutex(t_mutex *mutex, long *dest, long value);
