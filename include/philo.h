@@ -56,15 +56,17 @@ typedef struct s_philo
 
 struct s_params
 {
-	int nb_philos;
-	long time_to_d;
-	long time_to_e;
-	long time_to_s;
-	int limit_meals;
-	t_timeval *start_time;
-	bool end;
-	t_philo *philos;
-	t_fork *forks;
+	int 		nb_philos;
+	long 		time_to_d;
+	long 		time_to_e;
+	long 		time_to_s;
+	int 		limit_meals;
+	bool 		end;
+	bool 		rdy_to_start;
+	t_mutex 	table_mutex;
+	t_timeval 	*start_time;
+	t_philo 	*philos;
+	t_fork 		*forks;
 };
 
 /************************************************/
@@ -75,11 +77,19 @@ size_t ft_strlen(const char *str);
 int ft_isspace(int c);
 int check_args(int ac, char **av);
 long ft_gettimeofday(void);
+void wait_for_start(t_params *params);
 
 // int 	mutex_safe_call(t_mutex *mutex);
 int mutex_init_safe(t_mutex *mutex);
 int mutex_destroy_safe(t_mutex *mutex);
+int mutex_lock_safe(t_mutex *mutex);
+int mutex_unlock_safe(t_mutex *mutex);
+
 int thread_create_safe(pthread_t *thread, void *(*func)(void*), void *arg);
 // int thread_safe_call(pthread_t *thread, void *(*func)(void *), void *arg);
+long get_long_mutex(t_mutex *mutex, long *value);
+void set_long_mutex(t_mutex *mutex, long *dest, long value);
+bool get_bool_mutex(t_mutex *mutex, bool *value);
+void set_bool_mutex(t_mutex *mutex, bool *dest, bool value);
 
 #endif

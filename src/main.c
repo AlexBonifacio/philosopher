@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/26 23:00:44 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/27 11:59:08 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ int init_params(t_params *params, char **av)
 		params->limit_meals = -1;
 	if (check_eq_zero(params) == 0)
 		return ERROR;
+	if (mutex_init_safe(&params->table_mutex) == ERROR)
+		return ERROR;
 	params->start_time = 0;
 	params->end = false;
+	params->rdy_to_start = false;
 	return NO_ERR;
 }
 
@@ -78,8 +81,11 @@ void *dinner_routine(void *data)
 	t_philo *philo;
 
 	philo = (t_philo *)data;
+	wait_for_start(philo->params);
 	return philo;
 }
+
+
 
 int dinner_init(t_params *params)
 {
@@ -108,6 +114,7 @@ int dinner_init(t_params *params)
 			return status;
 		}
 	}
+	set_bool_mutex(&params->table_mutex,&params->rdy_to_start, true);
 	return NO_ERR;
 }
 
@@ -137,6 +144,7 @@ void init_philos(t_params *params)
 		}
 		params->forks[i].id = i;
 		params->philos[i].last_eat_time = 0;
+		
 		params->philos[i].params = params;
 		i++;
 	}
