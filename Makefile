@@ -4,7 +4,7 @@ CC := cc
 CFLAGS := -Wall -Wextra -Werror -MMD -MP -g3 -fsanitize=thread
 INC := -Iinclude
 
-SRC := main.c ft_atol.c ft_exit.c ft_strlen.c wait_for_start.c \
+SRC := main.c ft_atol.c ft_exit.c ft_strlen.c wait_for_start.c ft_times.c \
 		check_args.c ft_isspace.c mutex_safe.c thread_safe.c ft_gettimeofday.c \
 		lock_unlock.c
 

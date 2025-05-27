@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/27 19:02:20 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/27 22:34:42 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,13 @@ void *dinner_routine(void *params)
 
 	philo = (t_philo *)params;
 	wait_for_start(philo->params);
-	
-	while (get_bool_mutex(&philo->params->table_mutex, &philo->params->end) == false)
-	{
-		set_bool_mutex(&philo->params->table_mutex, &philo->params->end, true);
-	}
+	print_time(philo->params);
+	sleep(1); // Simulate some initial delay before starting the routine
+	print_time(philo->params);
+	// while (get_bool_mutex(&philo->params->table_mutex, &philo->params->end) == false)
+	// {
+	// 	set_bool_mutex(&philo->params->table_mutex, &philo->params->end, true);
+	// }
 	return philo;
 }
 

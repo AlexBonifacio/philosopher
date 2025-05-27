@@ -78,6 +78,7 @@ int ft_isspace(int c);
 int check_args(int ac, char **av);
 long ft_gettimeofday(void);
 void wait_for_start(t_params *params);
+void print_time(t_params *params);
 
 // int 	mutex_safe_call(t_mutex *mutex);
 int mutex_init_safe(t_mutex *mutex);
