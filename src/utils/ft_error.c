@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_error.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,8 +12,8 @@
 
 #include "philo.h"
 
-int ft_exit(char *str)
+int ft_error(char *str)
 {
-	printf(RED BOLD"Error: " RESET"%s\n", str);
+	printf(RED BOLD "Error: " RESET "%s\n", str);
 	return ERROR;
 }
