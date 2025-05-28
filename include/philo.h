@@ -22,9 +22,8 @@
 #define NO_ERR 1
 #define ERROR 0
 
-#define FORK 1
-#define EAT 2
-#define SLEEP 3
+#define MSEC 1
+#define USEC 2
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
@@ -67,7 +66,19 @@ struct s_params
 	t_mutex 	table_mutex;
 	t_philo 	*philos;
 	t_fork 		*forks;
+	t_mutex		print_mutex;
 };
+
+typedef enum e_philo_action
+{
+	P_EATING,
+	P_SLEEPING,
+	P_THINKING,
+	P_DEAD,
+	P_FORK_TAKEN,
+	P_SFORK_TAKEN,
+
+}	t_philo_action;
 
 /************************************************/
 
@@ -76,9 +87,10 @@ int ft_exit(char *str);
 size_t ft_strlen(const char *str);
 int ft_isspace(int c);
 int check_args(int ac, char **av);
-long ft_gettimeofday(void);
+long ft_gettimeofday(int flag);
 void wait_for_start(t_params *params);
 void print_time(t_params *params);
+void	ft_usleep(long time_in_us, t_params *params);
 
 // int 	mutex_safe_call(t_mutex *mutex);
 int mutex_init_safe(t_mutex *mutex);

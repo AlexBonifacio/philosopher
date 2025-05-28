@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:58:57 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/27 17:18:36 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:22:12 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	mutex_destroy_safe(t_mutex *mutex)
 
 int mutex_lock_safe(t_mutex *mutex)
 {
+	printf("lock %p\n", mutex);
 	if (pthread_mutex_lock(mutex) != 0)
 		return ft_exit("failed to lock mutex");
 	return NO_ERR;
@@ -35,6 +36,8 @@ int mutex_lock_safe(t_mutex *mutex)
 
 int mutex_unlock_safe(t_mutex *mutex)
 {
+	printf("unlock %p\n", mutex);
+
 	if (pthread_mutex_unlock(mutex) != 0)
 		return ft_exit("failed to unlock mutex");
 	return NO_ERR;

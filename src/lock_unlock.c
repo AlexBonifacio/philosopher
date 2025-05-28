@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:56:33 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/27 13:33:36 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:43:46 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	set_long_mutex(t_mutex *mutex, long *result, long value)
 {
-
 	mutex_lock_safe(mutex);
 	*result = value;
 	mutex_unlock_safe(mutex);
