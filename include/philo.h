@@ -30,6 +30,7 @@
 #define GREEN "\033[32m"
 #define BLUE "\033[34m"
 #define BOLD "\033[1m"
+#define PURP "\033[35m"
 
 typedef pthread_mutex_t t_mutex;
 typedef struct timeval t_timeval;
