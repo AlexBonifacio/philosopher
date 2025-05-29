@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/29 12:21:31 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:09:49 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,21 @@ int init_forks(t_params *params)
 void print_action(t_params *params, t_philo *philo, t_philo_action action)
 {
 	mutex_lock_safe(&params->print_mutex);
+	if (action == P_DEAD)
+	{
+		printf(RED BOLD"%ld %d is dead\n"RESET, print_time(params),philo->id);
+		set_bool_mutex(&params->table_mutex, &params->end, true);
+		mutex_unlock_safe(&params->print_mutex);
+		return ;
+	}
 	// print_time(params);
 	
-	// if (get_bool_mutex(&params->table_mutex, &params->end) == true)
-	// {
-	// 	mutex_unlock_safe(&params->table_mutex);
-	// 	return;
-	// }
-	if ((action == P_EATING))
+	if (get_bool_mutex(&params->table_mutex, &params->end) == true)
+	{
+		mutex_unlock_safe(&params->print_mutex);
+		return;
+	}
+	if (action == P_EATING)
 	{
 		printf("%ld %d is"GREEN " eating\n"RESET, print_time(params),philo->id);
 		// ft_usleep(params->time_to_e * 1000, params);
@@ -107,18 +114,14 @@ void print_action(t_params *params, t_philo *philo, t_philo_action action)
 	{
 		printf("%ld %d is thinking\n", print_time(params),philo->id);
 	}
-	else if (action == P_DEAD)
-	{
-		printf(RED BOLD"%ld %d is dead\n"RESET, print_time(params),philo->id);
-		set_bool_mutex(&params->table_mutex, &params->end, true);
-	}
+
 	else if (action == P_FFORK_TAKEN)
 	{
-		// printf("%ld %d has taken a fork\n", print_time(params),philo->id);
+		printf("%ld %d has taken a fork\n", print_time(params),philo->id);
 	}
 	else if (action == P_SFORK_TAKEN)
 	{
-		// printf("%ld %d has taken a fork\n", print_time(params),philo->id);
+		printf("%ld %d has taken a fork\n", print_time(params),philo->id);
 	}
 	mutex_unlock_safe(&params->print_mutex);
 }
@@ -128,19 +131,36 @@ void eat(t_philo *philo)
 	t_params *params;
 
 	params = philo->params;
+	if (get_bool_mutex(&params->table_mutex, &params->end))
+		return ;
 	mutex_lock_safe(&philo->f_fork->m_fork);
-	print_action(params, philo, P_FFORK_TAKEN);
+	if (get_bool_mutex(&params->table_mutex, &params->end))
+    {
+        mutex_unlock_safe(&philo->f_fork->m_fork);
+        return ;
+    }
 	mutex_lock_safe(&philo->s_fork->m_fork);
+	if (get_bool_mutex(&params->table_mutex, &params->end))
+    {
+		mutex_unlock_safe(&philo->s_fork->m_fork);
+        mutex_unlock_safe(&philo->f_fork->m_fork);
+        return ;
+    }
+	print_action(params, philo, P_FFORK_TAKEN);
 	print_action(params, philo, P_SFORK_TAKEN);
 	set_long_mutex(&params->table_mutex, &philo->last_eat_time, ft_gettimeofday(MSEC));
-	print_action(params, philo, P_EATING);
-	philo->eat_count++;
-	ft_usleep(params->time_to_e * 1000, params);
+	if (get_bool_mutex(&params->table_mutex, &params->end) == false)
+    {
+        print_action(params, philo, P_EATING);
+        philo->eat_count++;
+        ft_usleep(params->time_to_e * 1000, params);
+    }
 	if (params->limit_meals != -1 && philo->eat_count >= params->limit_meals)
 	{
 		philo->is_full = true;
-		set_bool_mutex(&params->table_mutex, &params->end, true);
-		return;
+		printf("coucou\n");
+		// set_bool_mutex(&params->table_mutex, &params->end, true);
+		// return;
 	}
 	mutex_unlock_safe(&philo->f_fork->m_fork);
 	mutex_unlock_safe(&philo->s_fork->m_fork);
@@ -151,39 +171,81 @@ void think(t_philo *philo, t_params *params)
 	print_action(params, philo, P_THINKING);
 	ft_usleep(50, params);
 }
-void *dinner_routine(void *params)
+void	*dinner_routine(void *arg)
 {
-	t_philo *philo;
+	t_philo		*philo = (t_philo *)arg;
+	t_params	*p = philo->params;
 
-	philo = (t_philo *)params;
-	wait_for_start(philo->params);
+	wait_for_start(p);
 	if (philo->id % 2 == 0)
-		ft_usleep(philo->params->time_to_s * 1000, params);
-	// printf("Philosopher %d is ready to start\n", philo->id);
-	while (get_bool_mutex(&philo->params->table_mutex, &philo->params->end) == false)
+		ft_usleep(p->time_to_e * 1000, p);
+
+	while (true)
 	{
+		if (get_bool_mutex(&p->table_mutex, &p->end))
+			break;
+
 		eat(philo);
-		print_action(philo->params, philo, P_SLEEPING);
-		ft_usleep(philo->params->time_to_s * 1000, params);
+		if (get_bool_mutex(&p->table_mutex, &p->end))
+			break;
 
-				// ft_usleep(philo->params->time_to_s * 1000, philo->params);
-		if (philo->params->nb_philos % 2 == 1)
-			think(philo, philo->params);
+		print_action(p, philo, P_SLEEPING);
+		ft_usleep(p->time_to_s * 1000, p);
+		if (get_bool_mutex(&p->table_mutex, &p->end))
+			break;
 
+		if (p->nb_philos % 2 == 1)
+		{
+			print_action(p, philo, P_THINKING);
+			ft_usleep(50 * 1000, p);
+			if (get_bool_mutex(&p->table_mutex, &p->end))
+				break;
+		}
 	}
-	
-	// while (get_bool_mutex(&philo->params->table_mutex, &philo->params->end) == false)
-	// {
-	// 	set_bool_mutex(&philo->params->table_mutex, &philo->params->end, true);
-	// }
-	return philo;
+	return NULL;
 }
 
-void death_checker(void *params)
+void *death_checker(void *arg)
 {
 	t_params *param;
-
-	param = (t_params *)params;
+	int i;
+	long now;
+	
+	param = (t_params *)arg;
+	wait_for_start(param);
+	while (get_bool_mutex(&param->table_mutex, &param->end) == false)
+	{
+		now = print_time(param);
+		i = 0;
+		mutex_lock_safe(&param->table_mutex);
+		while (i < param->nb_philos)
+		{
+			// int y = 0;
+			if (now - param->philos[i].last_eat_time > param->time_to_d)
+			{
+				param->end = true;
+				mutex_unlock_safe(&param->table_mutex);
+				print_action(param, &param->philos[i], P_DEAD);
+				return arg;
+			}
+			// if (get_bool_mutex(&param->philos[i].philo_mutex, &param->philos[i].is_full) == true)
+			// {
+			// 	printf("y = %d\n", y);
+			// 	y++;
+			// }
+			// if (y == param->nb_philos)
+			// {
+			// 	printf("y = %d", y);
+			// 	param->end = true;
+			// 	mutex_unlock_safe(&param->table_mutex);
+			// 	return arg;
+			// }
+			i++;
+		}
+		mutex_unlock_safe(&param->table_mutex);
+		ft_usleep(500, param);
+	}
+	return arg;
 }
 
 int dinner_init(t_params *params)
@@ -195,34 +257,33 @@ int dinner_init(t_params *params)
 	status = NO_ERR;
 	if (params->nb_philos == 1)
 		return NO_ERR; //
-	else
+
+	while (i < params->nb_philos)
 	{
-		while (i < params->nb_philos)
-		{
-			status = thread_create_safe(&params->philos[i].thread_id, dinner_routine, &params->philos[i]);
-			if (status == ERROR)
-				break;
-			i++;
-		}
-		status = thread_create_safe(&params->death, death_checker, params);
-		i++;
+		status = thread_create_safe(&params->philos[i].thread_id, dinner_routine, &params->philos[i]);
+		set_long_mutex(&params->table_mutex, &params->philos[i].last_eat_time, params->start_time);
 		if (status == ERROR)
-		{
-			while (--i >= 0)
-				thread_detach_safe(&params->philos[i].thread_id);
-			while (++i < params->nb_philos)
-				mutex_destroy_safe(&params->forks[i].m_fork);
-			return status;
-		}
+			break;
+		i++;
 	}
 	params->start_time = ft_gettimeofday(MSEC);
 	set_bool_mutex(&params->table_mutex, &params->rdy_to_start, true);
+	status = thread_create_safe(&params->death, death_checker, params);
+	if (status == ERROR)
+	{
+		while (--i >= 0)
+			thread_detach_safe(&params->philos[i].thread_id);
+		while (++i < params->nb_philos)
+			mutex_destroy_safe(&params->forks[i].m_fork);
+		return status;
+	}
 	i = 0;
 	while (i < params->nb_philos)
 	{
 		thread_join_safe(&params->philos[i].thread_id);
 		i++;
 	}
+	thread_join_safe(&params->death);
 	return NO_ERR;
 }
 
@@ -251,7 +312,6 @@ int init_philos(t_params *params)
 			params->philos[i].s_fork = &params->forks[i];
 		}
 		params->forks[i].id = i;
-		params->philos[i].last_eat_time = 0;
 		if (mutex_init_safe(&params->philos[i].philo_mutex) == ERROR)
 		{
 			while (--i >= 0)
@@ -280,7 +340,6 @@ int main(int ac, char **av)
 		return 3;
 	init_philos(&params);
 	dinner_init(&params);
-	printf("time start %ld\n", params.start_time);
 
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 22:19:54 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/29 11:34:10 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:05:07 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	ft_usleep(long time_in_us, t_params *params)
 	start_time = ft_gettimeofday(USEC);
 	while (ft_gettimeofday(USEC) - start_time < time_in_us)
 	{
-		// if (get_bool_mutex(&params->table_mutex, &params->end) == true)
-		// 	return;
+		if (get_bool_mutex(&params->table_mutex, &params->end) == true)
+			return;
 		usleep(100);
 	}
 }
