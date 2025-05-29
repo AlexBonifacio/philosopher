@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/29 00:24:34 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:21:31 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,13 @@ int init_forks(t_params *params)
 	}
 	return status;
 }
-
+/*
+ * to avoid all philosopher printing at the same time ?
+*/
 void print_action(t_params *params, t_philo *philo, t_philo_action action)
 {
 	mutex_lock_safe(&params->print_mutex);
-	print_time(params);
+	// print_time(params);
 	
 	// if (get_bool_mutex(&params->table_mutex, &params->end) == true)
 	// {
@@ -93,30 +95,30 @@ void print_action(t_params *params, t_philo *philo, t_philo_action action)
 	// }
 	if ((action == P_EATING))
 	{
-		printf("Philosopher %d is eating\n", philo->id);
+		printf("%ld %d is"GREEN " eating\n"RESET, print_time(params),philo->id);
 		// ft_usleep(params->time_to_e * 1000, params);
 	}
 	else if (action == P_SLEEPING)
 	{
-		printf("Philosopher %d is sleeping\n", philo->id);
+		printf("%ld %d is"BLUE" sleeping\n"RESET, print_time(params),philo->id);
 		// ft_usleep(params->time_to_s * 1000, params);
 	}
 	else if (action == P_THINKING)
 	{
-		printf("Philosopher %d is thinking\n", philo->id);
+		printf("%ld %d is thinking\n", print_time(params),philo->id);
 	}
 	else if (action == P_DEAD)
 	{
-		printf(RED BOLD"Philosopher %d is dead\n"RESET, philo->id);
+		printf(RED BOLD"%ld %d is dead\n"RESET, print_time(params),philo->id);
 		set_bool_mutex(&params->table_mutex, &params->end, true);
 	}
 	else if (action == P_FFORK_TAKEN)
 	{
-		printf("Philosopher %d has taken a fork\n", philo->id);
+		// printf("%ld %d has taken a fork\n", print_time(params),philo->id);
 	}
 	else if (action == P_SFORK_TAKEN)
 	{
-		printf("Philosopher %d has taken a second fork\n", philo->id);
+		// printf("%ld %d has taken a fork\n", print_time(params),philo->id);
 	}
 	mutex_unlock_safe(&params->print_mutex);
 }
@@ -147,7 +149,7 @@ void eat(t_philo *philo)
 void think(t_philo *philo, t_params *params)
 {
 	print_action(params, philo, P_THINKING);
-	// ft_usleep(50, params);
+	ft_usleep(50, params);
 }
 void *dinner_routine(void *params)
 {
@@ -155,6 +157,8 @@ void *dinner_routine(void *params)
 
 	philo = (t_philo *)params;
 	wait_for_start(philo->params);
+	if (philo->id % 2 == 0)
+		ft_usleep(philo->params->time_to_s * 1000, params);
 	// printf("Philosopher %d is ready to start\n", philo->id);
 	while (get_bool_mutex(&philo->params->table_mutex, &philo->params->end) == false)
 	{
@@ -163,7 +167,8 @@ void *dinner_routine(void *params)
 		ft_usleep(philo->params->time_to_s * 1000, params);
 
 				// ft_usleep(philo->params->time_to_s * 1000, philo->params);
-		think(philo, philo->params);
+		if (philo->params->nb_philos % 2 == 1)
+			think(philo, philo->params);
 
 	}
 	
@@ -172,6 +177,13 @@ void *dinner_routine(void *params)
 	// 	set_bool_mutex(&philo->params->table_mutex, &philo->params->end, true);
 	// }
 	return philo;
+}
+
+void death_checker(void *params)
+{
+	t_params *param;
+
+	param = (t_params *)params;
 }
 
 int dinner_init(t_params *params)
@@ -192,6 +204,8 @@ int dinner_init(t_params *params)
 				break;
 			i++;
 		}
+		status = thread_create_safe(&params->death, death_checker, params);
+		i++;
 		if (status == ERROR)
 		{
 			while (--i >= 0)

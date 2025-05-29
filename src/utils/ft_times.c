@@ -6,18 +6,19 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 22:19:54 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/28 23:49:21 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:34:10 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_time(t_params *params)
+long	print_time(t_params *params)
 {
 	long now;
 	
 	now = ft_gettimeofday(MSEC) - params->start_time;
-	printf("%.8ld ", now);
+	// printf("%.8ld ", now);
+	return now;
 }
 
 /*

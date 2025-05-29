@@ -64,6 +64,7 @@ struct s_params
 	long start_time;
 	bool end;
 	bool rdy_to_start;
+	pthread_t death;
 	t_mutex table_mutex;
 	t_philo *philos;
 	t_fork *forks;
@@ -90,7 +91,7 @@ int ft_isspace(int c);
 int check_args(int ac, char **av);
 long ft_gettimeofday(int flag);
 void wait_for_start(t_params *params);
-void print_time(t_params *params);
+long print_time(t_params *params);
 void ft_usleep(long time_in_us, t_params *params);
 
 // int 	mutex_safe_call(t_mutex *mutex);
