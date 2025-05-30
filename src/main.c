@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/29 23:52:45 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:28:12 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,10 +168,28 @@ void think(t_philo *philo, t_params *params)
 {
 	long time_to_think = params->time_to_e - params->time_to_s;
 	
+	
+	if (params->nb_philos % 2 == 0 && time_to_think <= 0)
+	{
+		return;
+	}
 	if (time_to_think < 0)
 		time_to_think = -time_to_think;
-	print_action(params, philo, P_THINKING);
-	ft_usleep(time_to_think * 1000 + 100, params);
+	if (params->nb_philos % 2 == 1)
+	{
+		if (params->time_to_e < params->time_to_s)
+		{
+			time_to_think = params->time_to_e * 2 - params->time_to_s;
+			if (time_to_think < 0)
+				time_to_think = -time_to_think;
+		}
+		print_action(params, philo, P_THINKING);
+		ft_usleep(time_to_think * 1000 + 500, params);
+	}
+	else
+	{
+		print_action(params, philo, P_THINKING);
+	}
 }
 void	*dinner_routine(void *arg)
 {
@@ -196,12 +214,10 @@ void	*dinner_routine(void *arg)
 		if (get_bool_mutex(&p->table_mutex, &p->end))
 			break;
 
-		if (p->nb_philos % 2 == 1)
-		{
-			think(philo, p);
-			if (get_bool_mutex(&p->table_mutex, &p->end))
-				break;
-		}
+		think(philo, p);
+		if (get_bool_mutex(&p->table_mutex, &p->end))
+			break;
+
 	}
 	return NULL;
 }
