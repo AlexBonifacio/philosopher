@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:59:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/28 23:57:45 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/05/31 00:41:58 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,10 @@ long ft_gettimeofday(int flag)
 	long start_time;
 	
 	start_time = 0;
-	gettimeofday(&time, NULL);
 	if (gettimeofday(&time, NULL) != 0)
 		ft_error("gettimeofday failed");
 	if (flag == MSEC)
-		start_time = time.tv_sec * 1000 + time.tv_usec / 1000;
+		start_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	else if (flag == USEC)
 		start_time = time.tv_sec * 1000000 + time.tv_usec;
 	return (start_time);
