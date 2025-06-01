@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 17:36:55 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/01 23:42:35 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 00:00:15 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,6 @@ int init_philos(t_params *p)
 	}
 	return NO_ERR;
 }
-
-/*
- * number_of_philosophers time_to_die time_to_eat time_to_sleep
- * [number_of_times_each_philosopher_must_eat]
- */
 
 static void basic_params(t_params *params, char **av)
 {
