@@ -1,13 +1,12 @@
 NAME := philo
 
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -MMD -MP 
-#-g3 -fsanitize=thread
+CFLAGS := -Wall -Wextra -Werror -MMD -MP -g3 # -fsanitize=thread
 INC := -Iinclude
 
 SRC := main.c ft_atol.c ft_error.c ft_strlen.c wait_for_start.c ft_times.c \
 		check_args.c ft_isspace.c mutex_safe.c thread_safe.c ft_gettimeofday.c \
-		lock_unlock.c
+		lock_unlock.c init_philos.c routine.c monitor.c
 
 SRC_DIR := src
 OBJ_DIR := obj
@@ -23,7 +22,7 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(INC) -o $@ $^
 
 # Compile object files
-$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.c Makefile | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(OBJ_DIR):
