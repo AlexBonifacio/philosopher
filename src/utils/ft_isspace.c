@@ -6,13 +6,13 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:49:22 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/22 15:12:59 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:04:02 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int ft_isspace(int c)
+int	ft_isspace(int c)
 {
 	if (c == ' ' || c == '\n' || c == '\t'
 		|| c == '\v' || c == '\f' || c == '\r')

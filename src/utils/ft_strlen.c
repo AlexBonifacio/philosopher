@@ -6,15 +6,15 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:38:21 by abonifac          #+#    #+#             */
-/*   Updated: 2025/05/31 00:40:18 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:04:42 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
-	size_t len;
+	size_t	len;
 
 	len = 0;
 	while (str[len])

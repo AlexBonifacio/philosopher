@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 20:01:22 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/01 23:55:56 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:59:21 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,35 +56,35 @@ static void	unlock_mutexes_helper(t_philo *philo)
 	mutex_unlock_safe(&philo->s_fork->m_fork);
 }
 
-void	eat(t_philo *philo)
+void	eat(t_philo *phi)
 {
 	t_params	*p;
 
-	p = philo->params;
+	p = phi->params;
 	if (get_bool_mutex(&p->table_mutex, &p->end))
 		return ;
+	mutex_lock_safe(&phi->f_fork->m_fork);
+	mutex_lock_safe(&phi->s_fork->m_fork);
 	if (get_bool_mutex(&p->table_mutex, &p->end))
 	{
-		unlock_mutexes_helper(philo);
+		unlock_mutexes_helper(phi);
 		return ;
 	}
-	print_action(p, philo, P_FFORK_TAKEN);
-	print_action(p, philo, P_SFORK_TAKEN);
-	set_long_mutex(&p->table_mutex, &philo->last_eat_time, print_time(p));
+	print_action(p, phi, P_FFORK_TAKEN);
+	print_action(p, phi, P_SFORK_TAKEN);
+	set_long_mutex(&p->table_mutex, &phi->last_eat_time, print_time(p));
 	if (!get_bool_mutex(&p->table_mutex, &p->end))
 	{
-		print_action(p, philo, P_EATING);
-		philo->eat_count++;
+		print_action(p, phi, P_EATING);
+		set_long_mutex(&p->table_mutex, &phi->eat_count, phi->eat_count + 1);
+		phi->eat_count++;
 		ft_usleep(p->time_to_e * 1000, p);
 	}
-	if (p->limit_meals != -1 && philo->eat_count >= p->limit_meals)
-		set_bool_mutex(&philo->philo_mutex, &philo->is_full, true);
-	unlock_mutexes_helper(philo);
+	if (p->limit_meals != -1 && phi->eat_count >= p->limit_meals)
+		set_bool_mutex(&phi->philo_mutex, &phi->is_full, true);
+	unlock_mutexes_helper(phi);
 }
 
-/*
- * to avoid all philosopher printing at the same time ?
-*/
 void	print_action(t_params *p, t_philo *philo, t_philo_action action)
 {
 	mutex_lock_safe(&p->print_mutex);

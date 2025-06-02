@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 23:37:04 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/01 23:41:36 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:04:10 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int			id;
-	int			eat_count;
+	long		eat_count;
 	bool		is_full;
 	long		last_eat_time;
 	t_fork		*f_fork;
@@ -114,6 +114,8 @@ void	eat(t_philo *philo);
 
 void	print_action(t_params *params, t_philo *philo, t_philo_action action);
 void	*end_checker(void *arg);
+
+int		init_thread_one_philo(t_params *params);
 
 int		mutex_init_safe(t_mutex *mutex);
 int		mutex_destroy_safe(t_mutex *mutex);
