@@ -6,18 +6,13 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 23:37:04 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/02 13:04:10 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:52:38 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-/*Printf malloc free write usleep
- * pthread_create join detach
- * pthread_mutex_init destroy lock unlock
- * gettimeofday
- */
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
