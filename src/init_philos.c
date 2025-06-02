@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 17:36:55 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/02 11:01:09 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:04:06 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	init_philos(t_params *p)
 
 static void	basic_params(t_params *params, char **av)
 {
-	params->time_to_d = ft_atol(av[2]);
-	params->time_to_e = ft_atol(av[3]);
-	params->time_to_s = ft_atol(av[4]);
+	params->time_to_d = ft_atol(av[2]) * 1000;
+	params->time_to_e = ft_atol(av[3]) * 1000;
+	params->time_to_s = ft_atol(av[4]) * 1000;
 	if (av[5])
 		params->limit_meals = ft_atol(av[5]);
 	else

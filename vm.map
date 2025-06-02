@@ -1,2 +1,0 @@
-Reduce random nb for adress
-sudo sysctl vm.mmap_rnd_bits=28

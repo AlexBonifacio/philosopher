@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 22:19:54 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/02 11:02:23 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:48:16 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void	ft_usleep(long time_in_us, t_params *params)
 	{
 		if (get_bool_mutex(&params->table_mutex, &params->end) == true)
 			return ;
-		usleep(100);
+		usleep(200);
 	}
 }

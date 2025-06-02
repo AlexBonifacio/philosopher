@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 11:07:17 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/02 11:07:33 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:04:24 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	*one_philo(void *arg)
 	params = philo->params;
 	params->start_time = ft_gettimeofday(MSEC);
 	print_action(params, philo, P_FFORK_TAKEN);
-	ft_usleep(params->time_to_d * 1000, params);
+	ft_usleep(params->time_to_d, params);
 	print_action(params, philo, P_DEAD);
 	set_bool_mutex(&params->table_mutex, &params->end, true);
 	return (NULL);

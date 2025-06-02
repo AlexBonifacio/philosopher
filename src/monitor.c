@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 22:23:10 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/02 00:01:06 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:39:44 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	*end_checker(void *arg)
 		if (meal_checker(param) == true)
 			return (NULL);
 		mutex_unlock_safe(&param->table_mutex);
-		ft_usleep(500, param);
+		ft_usleep(1000, param);
 	}
 	return (arg);
 }
