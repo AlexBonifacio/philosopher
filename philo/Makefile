@@ -1,7 +1,8 @@
 NAME := philo
 
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -MMD -MP #-g -fsanitize=thread -Ofast -march=native -flto 
+CFLAGS := -Wall -Wextra -Werror -MMD -MP 
+# -fsanitize=thread
 INC := -Iinclude
 
 SRC := main.c ft_atol.c ft_error.c ft_strlen.c wait_for_start.c ft_times.c \
