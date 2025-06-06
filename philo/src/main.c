@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/02 13:06:01 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:55:47 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 * for odds:
 * time_to_die -> max(3 * time_to_eat, time_to_eat + time_to_sleep)
-* if time to [sleep < (2 * time to eat)] -> 3 * time to eat
+* if [time to sleep < (2 * time to eat)] -> 3 * time to eat
 * else time_to_die -> time_to_eat + time_to_sleep
 * 
 * for evens:
@@ -52,7 +52,6 @@ int	init_threads_philos(t_params *p)
 	i = 0;
 	while (i < p->nb_philos)
 	{
-		set_long_mutex(&p->table_mutex, &p->philos[i].last_eat_time, 0);
 		status = thread_create_safe(&p->philos[i].thread_id,
 				dinner_routine, &p->philos[i]);
 		if (status == ERROR)

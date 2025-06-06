@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 22:23:10 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/02 15:39:44 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:38:16 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 static bool	death_checker(long now, t_params *param)
 {
-	int	i;
+	int		i;
+	long	time_to_die_ms;
 
 	i = 0;
+	time_to_die_ms = param->time_to_d / 1000;
 	while (i < param->nb_philos)
 	{
-		if (now - param->philos[i].last_eat_time > param->time_to_d)
+		if (now - param->philos[i].last_eat_time >= time_to_die_ms)
 		{
 			param->end = true;
 			mutex_unlock_safe(&param->table_mutex);
@@ -72,7 +74,7 @@ void	*end_checker(void *arg)
 		if (meal_checker(param) == true)
 			return (NULL);
 		mutex_unlock_safe(&param->table_mutex);
-		ft_usleep(1000, param);
+		ft_usleep(100, param);
 	}
 	return (arg);
 }
