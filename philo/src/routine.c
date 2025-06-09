@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 20:01:22 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/08 18:02:15 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/09 22:32:32 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	*dinner_routine(void *arg)
 	p = philo->params;
 	sleep = p->time_to_s;
 	wait_for_start(p);
-	if (get_long_mutex(&p->table_mutex, &p->start_time) == -1)
-		set_long_mutex(&p->table_mutex, &p->start_time, ft_gettimeofday(MSEC));
+	// if (get_long_mutex(&p->table_mutex, &p->start_time) == -1)
+	// 	set_long_mutex(&p->table_mutex, &p->start_time, ft_gettimeofday(MSEC));
 	set_long_mutex(&p->table_mutex, &philo->last_eat_time, 0);
 	print_action(p, philo, P_THINKING);
 	if (philo->id % 2 == 0)
