@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/07 18:26:08 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/08 18:02:56 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ void	free_threads(t_params *p, int i_fail, bool clean_threads)
 	int	i;
 
 	i = 0;
+	set_bool_mutex(&p->table_mutex, &p->rdy_to_start, true);
+	set_bool_mutex(&p->table_mutex, &p->end, true);
 	while (i < i_fail && clean_threads == true)
 	{
-		printf("Freeing thread %d\n", i);
-		thread_detach_safe(&p->philos[i].thread_id);
+		thread_join_safe(&p->philos[i].thread_id);
 		i++;
 	}
 	i = 0;
@@ -41,7 +42,8 @@ void	free_threads(t_params *p, int i_fail, bool clean_threads)
 		mutex_destroy_safe(&p->forks[i].m_fork);
 		i++;
 	}
-	// mutex_destroy_safe(&p->table_mutex);
+	mutex_destroy_safe(&p->table_mutex);
+	mutex_destroy_safe(&p->print_mutex);
 }
 
 int	init_threads_philos(t_params *p)
@@ -55,9 +57,9 @@ int	init_threads_philos(t_params *p)
 	{
 		status = thread_create_safe(&p->philos[i].thread_id,
 				dinner_routine, &p->philos[i]);
-		if (status == ERROR || i == 3)
+		if (status == ERROR)
 		{
-			free_threads(p, i + 1, true);
+			free_threads(p, i, true);
 			return (ERROR);
 		}
 		i++;
@@ -74,9 +76,7 @@ int	dinner_init(t_params *params)
 	status = NO_ERR;
 	if (params->nb_philos == 1)
 		return (init_thread_one_philo(params));
-	params->start_time = ft_gettimeofday(MSEC);
 	status = init_threads_philos(params);
-	set_bool_mutex(&params->table_mutex, &params->rdy_to_start, true);
 	if (status == ERROR)
 		return (ERROR);
 	status = thread_create_safe(&params->death, end_checker, params);
@@ -85,6 +85,7 @@ int	dinner_init(t_params *params)
 		free_threads(params, params->nb_philos, true);
 		return (ERROR);
 	}
+	set_bool_mutex(&params->table_mutex, &params->rdy_to_start, true);
 	i = -1;
 	while (++i < params->nb_philos)
 		thread_join_safe(&params->philos[i].thread_id);

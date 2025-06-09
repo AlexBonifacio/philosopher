@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 17:36:55 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/05 17:40:58 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/08 17:50:10 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	init_params(t_params *params, char **av)
 		mutex_destroy_safe(&params->table_mutex);
 		return (ERROR);
 	}
-	params->start_time = 0;
+	params->start_time = -1;
 	params->end = false;
 	params->rdy_to_start = false;
 	return (NO_ERR);
