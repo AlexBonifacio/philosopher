@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:53:20 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/09 22:33:16 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:24:38 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ int	dinner_init(t_params *params)
 		free_threads(params, params->nb_philos, true);
 		return (ERROR);
 	}
-	set_long_mutex(&params->table_mutex, &params->start_time, ft_gettimeofday(MSEC));
+	set_long_mutex(&params->table_mutex, &params->start_time,
+		ft_gettimeofday(MSEC));
 	set_bool_mutex(&params->table_mutex, &params->rdy_to_start, true);
 	i = -1;
 	while (++i < params->nb_philos)

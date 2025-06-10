@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 20:01:22 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/09 22:32:32 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:28:46 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	*dinner_routine(void *arg)
 	p = philo->params;
 	sleep = p->time_to_s;
 	wait_for_start(p);
-	// if (get_long_mutex(&p->table_mutex, &p->start_time) == -1)
-	// 	set_long_mutex(&p->table_mutex, &p->start_time, ft_gettimeofday(MSEC));
 	set_long_mutex(&p->table_mutex, &philo->last_eat_time, 0);
 	print_action(p, philo, P_THINKING);
 	if (philo->id % 2 == 0)
@@ -56,8 +54,8 @@ void	think(t_philo *philo, t_params *params)
 
 static void	unlock_mutexes_helper(t_philo *philo)
 {
-	mutex_unlock_safe(&philo->f_fork->m_fork);
-	mutex_unlock_safe(&philo->s_fork->m_fork);
+	unlock_fork(philo->f_fork);
+	unlock_fork(philo->s_fork);
 }
 
 void	eat(t_philo *phi)
@@ -67,8 +65,8 @@ void	eat(t_philo *phi)
 	p = phi->params;
 	if (get_bool_mutex(&p->table_mutex, &p->end))
 		return ;
-	mutex_lock_safe(&phi->f_fork->m_fork);
-	mutex_lock_safe(&phi->s_fork->m_fork);
+	lock_fork(phi->f_fork);
+	lock_fork(phi->s_fork);
 	if (get_bool_mutex(&p->table_mutex, &p->end))
 	{
 		unlock_mutexes_helper(phi);
@@ -83,9 +81,9 @@ void	eat(t_philo *phi)
 		set_long_mutex(&p->table_mutex, &phi->eat_count, phi->eat_count + 1);
 	}
 	ft_usleep(p->time_to_e, p);
+	unlock_mutexes_helper(phi);
 	if (p->limit_meals != -1 && phi->eat_count >= p->limit_meals)
 		set_bool_mutex(&phi->philo_mutex, &phi->is_full, true);
-	unlock_mutexes_helper(phi);
 }
 
 void	print_action(t_params *p, t_philo *philo, t_philo_action action)

@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 23:37:04 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/05 17:41:11 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:23:59 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_params	t_params;
 typedef struct s_fork
 {
 	t_mutex	m_fork;
+	bool	is_locked;
 }	t_fork;
 
 typedef struct s_philo
@@ -88,6 +89,8 @@ typedef enum e_philo_action
 
 /************************************************/
 
+void	lock_fork(t_fork *f);
+void	unlock_fork(t_fork *f);
 long	ft_atol(const char *str);
 int		ft_error(char *str);
 size_t	ft_strlen(const char *str);

@@ -6,7 +6,7 @@
 /*   By: abonifac <abonifac@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 17:36:55 by abonifac          #+#    #+#             */
-/*   Updated: 2025/06/08 17:50:10 by abonifac         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:19:32 by abonifac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	init_forks(t_params *params)
 		i++;
 		if (status == ERROR)
 			break ;
+		params->forks[i].is_locked = false;
 	}
 	if (status == ERROR)
 	{
